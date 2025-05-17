@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Badge, ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, Trash, X } from "lucide-react";
 import { calculateTotal } from "@/lib/utils";
 import { useFetchProducts } from "@/features/product/useFetchProducts";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,21 +34,15 @@ const Navbar = () => {
           onClick={() => setIsCartOpen(!isCartOpen)}
         >
           {isCartOpen ? (
-            <>
-              <X className="h-5 w-5" />
-              {cartItems.length > 0 && (
-                <Badge className="absolute -top-2 -right-2 px-2 py-1 text-xs"></Badge>
-              )}
-            </>
+            <X className="h-5 w-5" />
           ) : (
-            <>
-              <ShoppingCart className="h-5 w-5" />
-              {cartItems.length > 0 && (
-                <Badge className="absolute -top-2 -right-2 px-2 py-1 text-xs">
-                  {cartItems.length}
-                </Badge>
-              )}
-            </>
+            <ShoppingCart className="h-5 w-5" />
+          )}
+
+          {cartItems.length > 0 && (
+            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {cartItems.length}
+            </div>
           )}
         </Button>
 
@@ -87,7 +81,7 @@ const Navbar = () => {
                             size="icon"
                             className="h-8 w-8 text-gray-500 hover:text-red-500"
                           >
-                            <X className="h-4 w-4" />
+                            <Trash className="h-4 w-4" />
                           </Button>
                         </div>
                       );
