@@ -7,8 +7,10 @@ interface ProductState {
   error: string | null;
 }
 
+const api_url = import.meta.env.VITE_API_URL;
+
 export const fetchProducts = createAsyncThunk("products/fetch", async () => {
-  const res = await fetch("https://fakestoreapi.com/products");
+  const res = await fetch(api_url);
   return res.json();
 });
 
