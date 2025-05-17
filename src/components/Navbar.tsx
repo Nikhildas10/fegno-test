@@ -5,13 +5,18 @@ import { calculateTotal } from "@/lib/utils";
 import { useFetchProducts } from "@/features/product/useFetchProducts";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { removeFromCart } from "@/features/cart/cartSlice";
+import { clearCart, removeFromCart } from "@/features/cart/cartSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { products, loading } = useFetchProducts();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
+
+    const handleCheckout = () => {
+        alert("checkout completed");
+        dispatch(clearCart());
+    }
 
   if (loading) {
     return (
@@ -94,7 +99,7 @@ const Navbar = () => {
                         ₹{calculateTotal(cartItems, products).toFixed(2)}
                       </span>
                     </div>
-                    <Button className="w-full mt-3">Checkout</Button>
+                    <Button onClick={handleCheckout} className="w-full mt-3">Checkout</Button>
                   </div>
                 </>
               )}
