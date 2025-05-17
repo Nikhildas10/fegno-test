@@ -1,12 +1,25 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { cart, products } from "@/lib/mockData";
-import {Badge, ShoppingCart, X } from "lucide-react";
+import { Badge, ShoppingCart, X } from "lucide-react";
 import { calculateTotal } from "@/lib/utils";
+import { useFetchProducts } from "@/features/product/useFetchProducts";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import { removeFromCart } from "@/features/cart/cartSlice";
 
 const Navbar = () => {
-    const [isCartOpen, setIsCartOpen] = useState(false);
+  const dispatch = useDispatch();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { products, loading } = useFetchProducts();
+  const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto px-4 bg-gray-100 py-4 flex justify-between items-center">
       <div className="flex items-center">
@@ -23,18 +36,16 @@ const Navbar = () => {
           {isCartOpen ? (
             <>
               <X className="h-5 w-5" />
-              {cart.length > 0 && (
-                <Badge className="absolute -top-2 -right-2 px-2 py-1 text-xs">
-                  {cart.length}
-                </Badge>
+              {cartItems.length > 0 && (
+                <Badge className="absolute -top-2 -right-2 px-2 py-1 text-xs"></Badge>
               )}
             </>
           ) : (
             <>
               <ShoppingCart className="h-5 w-5" />
-              {cart.length > 0 && (
+              {cartItems.length > 0 && (
                 <Badge className="absolute -top-2 -right-2 px-2 py-1 text-xs">
-                  {cart.length}
+                  {cartItems.length}
                 </Badge>
               )}
             </>
@@ -48,14 +59,14 @@ const Navbar = () => {
           >
             <div className="p-4 max-h-96 overflow-y-auto">
               <h3 className="font-bold text-lg mb-3">Your Cart</h3>
-              {cart.length === 0 ? (
+              {cartItems.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">
                   Your cart is empty
                 </p>
               ) : (
                 <>
                   <div className="space-y-3">
-                    {cart.map((productId) => {
+                    {cartItems.map((productId) => {
                       const product = products.find((p) => p.id === productId)!;
                       return (
                         <div
@@ -72,6 +83,7 @@ const Navbar = () => {
                           </div>
                           <Button
                             variant="ghost"
+                            onClick={() => dispatch(removeFromCart(product.id))}
                             size="icon"
                             className="h-8 w-8 text-gray-500 hover:text-red-500"
                           >
@@ -84,7 +96,9 @@ const Navbar = () => {
                   <div className="mt-3">
                     <div className="flex justify-between font-bold">
                       <span>Total:</span>
-                      <span>₹{calculateTotal(cart).toFixed(2)}</span>
+                      <span>
+                        ₹{calculateTotal(cartItems, products).toFixed(2)}
+                      </span>
                     </div>
                     <Button className="w-full mt-3">Checkout</Button>
                   </div>
@@ -96,6 +110,6 @@ const Navbar = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Navbar
+export default Navbar;

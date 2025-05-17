@@ -7,20 +7,35 @@ import {
 } from "@/components/ui/card";
 import type { Product } from "@/lib/types";
 import StarRating from "./StarRating";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import { addToCart, removeFromCart } from "@/features/cart/cartSlice";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const dispatch = useDispatch();
+  const { items } = useSelector((state: RootState) => state.cart);
+
+  const isInCart = items.includes(product.id);
+
+  const handleClick = () => {
+    if (!isInCart) {
+      dispatch(addToCart(product.id));
+    } else {
+      dispatch(removeFromCart(product.id));
+    }
+  };
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="p-4 pb-0">
-        <div className="aspect-square relative overflow-hidden rounded-md">
+        <div className="h-48 w-full bg-white flex items-center justify-center overflow-hidden rounded-md">
           <img
-            src={product.image || "/placeholder.svg"}
+            src={product.image || "https://placehold.co/400"}
             alt={product.title}
-            className="object-cover"
+            className="object-contain h-full"
           />
         </div>
       </CardHeader>
@@ -40,7 +55,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           rate={product.rating.rate}
           key={product.id}
         />
-        <Button className="w-full">Add to cart</Button>
+        <Button
+          onClick={handleClick}
+          className="w-full"
+          variant={isInCart ? "destructive" : "default"}
+        >
+          {isInCart ? "Remove from Cart" : "Add to Cart"}
+        </Button>
       </CardFooter>
     </Card>
   );
