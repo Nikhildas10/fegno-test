@@ -26,7 +26,7 @@ const Navbar = () => {
     );
   }
   return (
-    <div className="container mx-auto px-4 bg-gray-100 py-4 flex justify-between items-center">
+    <div className="container mx-auto px-4 bg-gray-100 py-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center">
         <h1 className="text-xl font-bold">Logo</h1>
       </div>
@@ -99,7 +99,9 @@ const Navbar = () => {
                         ₹{calculateTotal(cartItems, products).toFixed(2)}
                       </span>
                     </div>
-                    <Button onClick={handleCheckout} className="w-full mt-3">Checkout</Button>
+                    <Button onClick={handleCheckout} className="w-full mt-3">
+                      Checkout
+                    </Button>
                   </div>
                 </>
               )}
