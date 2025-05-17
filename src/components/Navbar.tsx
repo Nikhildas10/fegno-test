@@ -5,7 +5,7 @@ import { calculateTotal } from "@/lib/utils";
 import { useFetchProducts } from "@/features/product/useFetchProducts";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { clearCart, removeFromCart } from "@/features/cart/cartSlice";
+import { clearCart, removeFromCart } from "@/features/cart/CartSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();

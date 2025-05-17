@@ -9,7 +9,7 @@ import type { Product } from "@/lib/types";
 import StarRating from "./StarRating";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { addToCart, removeFromCart } from "@/features/cart/cartSlice";
+import { addToCart, removeFromCart } from "@/features/cart/CartSlice";
 
 interface ProductCardProps {
   product: Product;
