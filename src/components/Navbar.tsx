@@ -13,10 +13,10 @@ const Navbar = () => {
   const { products, loading } = useFetchProducts();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-    const handleCheckout = () => {
-        alert("checkout completed");
-        dispatch(clearCart());
-    }
+  const handleCheckout = () => {
+    alert("checkout completed");
+    dispatch(clearCart());
+  };
 
   if (loading) {
     return (
